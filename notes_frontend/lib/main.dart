@@ -95,7 +95,7 @@ class Note {
   factory Note.fromMap(Map<String, dynamic> map) {
     try {
       return Note(
-        id: map['id'] as int,
+        id: map['id'] is int ? map['id'] : int.tryParse(map['id'].toString()) ?? -1,
         title: map['title'] as String,
         content: map['content'] as String? ?? '',
         createdAt: DateTime.parse(map['created_at'] ?? ''),
