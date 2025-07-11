@@ -93,13 +93,20 @@ class Note {
   });
 
   factory Note.fromMap(Map<String, dynamic> map) {
-    return Note(
-      id: map['id'] as int,
-      title: map['title'] as String,
-      content: map['content'] as String? ?? '',
-      createdAt: DateTime.parse(map['created_at']),
-      updatedAt: DateTime.parse(map['updated_at']),
-    );
+    try {
+      return Note(
+        id: map['id'] as int,
+        title: map['title'] as String,
+        content: map['content'] as String? ?? '',
+        createdAt: DateTime.parse(map['created_at'] ?? ''),
+        updatedAt: DateTime.parse(map['updated_at'] ?? ''),
+      );
+    } catch (e, stack) {
+      print('[ERROR] Failed to deserialize Note: $e');
+      print('[MAP DATA] $map');
+      print('[STACKTRACE] $stack');
+      rethrow;
+    }
   }
 
   Map<String, dynamic> toMap() => {
@@ -179,8 +186,12 @@ class NotesState extends ChangeNotifier {
       final result = await NotesService.fetchNotes(search: search);
       _notes = result;
       _error = null;
-    } catch (e) {
-      _error = 'Failed to load notes';
+    } catch (e, stack) {
+      // Log full error to console for debugging
+      print('[ERROR] Failed to load notes: $e');
+      print('[STACKTRACE] $stack');
+      // Optionally, display more info in the UI during debug
+      _error = 'Failed to load notes: $e';
     }
     _setLoading(false);
   }
