@@ -94,17 +94,31 @@ class Note {
 
   factory Note.fromMap(Map<String, dynamic> map) {
     try {
+      DateTime parseDate(dynamic value) {
+        if (value == null || value == '') {
+          return DateTime.now();
+        }
+        if (value is DateTime) {
+          return value;
+        }
+        try {
+          return DateTime.parse(value.toString());
+        } catch (_) {
+          return DateTime.now();
+        }
+      }
+
       return Note(
         id: map['id'] is int ? map['id'] : int.tryParse(map['id'].toString()) ?? -1,
-        title: map['title'] as String,
+        title: map['title'] as String? ?? '',
         content: map['content'] as String? ?? '',
-        createdAt: DateTime.parse(map['created_at'] ?? ''),
-        updatedAt: DateTime.parse(map['updated_at'] ?? ''),
+        createdAt: parseDate(map['created_at']),
+        updatedAt: parseDate(map['updated_at']),
       );
     } catch (e, stack) {
-      print('[ERROR] Failed to deserialize Note: $e');
-      print('[MAP DATA] $map');
-      print('[STACKTRACE] $stack');
+      // print('[ERROR] Failed to deserialize Note: $e');
+      // print('[MAP DATA] $map');
+      // print('[STACKTRACE] $stack');
       rethrow;
     }
   }
