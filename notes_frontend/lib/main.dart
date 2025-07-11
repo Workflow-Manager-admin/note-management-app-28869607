@@ -445,7 +445,7 @@ class _NotesListPageState extends State<NotesListPage> {
                   if (_state.error != null)
                     Padding(
                       padding: const EdgeInsets.only(top: 10),
-                      child: Text(
+                      child: SelectableText(
                         _state.error!,
                         style: const TextStyle(
                             color: Colors.red, fontWeight: FontWeight.w400),
@@ -652,8 +652,11 @@ class _NoteEditPageState extends State<NoteEditPage> {
               const SizedBox(height: 20),
               if (_err != null)
                 Center(
-                  child: Text(_err!,
-                      style: const TextStyle(color: Colors.red, fontWeight: FontWeight.w500)),
+                  child: SelectableText(
+                    _err!,
+                    style: const TextStyle(color: Colors.red, fontWeight: FontWeight.w500),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
               Row(
                 children: [
