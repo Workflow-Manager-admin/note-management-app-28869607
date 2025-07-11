@@ -3,16 +3,19 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:notes_frontend/main.dart';
 
 void main() {
-  testWidgets('App generation message displayed', (WidgetTester tester) async {
-    await tester.pumpWidget(const MyApp());
+  testWidgets('NotesApp main launches NotesListPage', (WidgetTester tester) async {
+    await tester.pumpWidget(const NotesApp());
 
-    expect(find.text('notes_frontend App is being generated...'), findsOneWidget);
-    expect(find.byType(CircularProgressIndicator), findsOneWidget);
+    // Should find the notes title
+    expect(find.text('Notes'), findsOneWidget);
+    // Should find the floating action button
+    expect(find.byType(FloatingActionButton), findsOneWidget);
   });
 
-  testWidgets('App bar has correct title', (WidgetTester tester) async {
-    await tester.pumpWidget(const MyApp());
+  testWidgets('NotesApp shows search bar', (WidgetTester tester) async {
+    await tester.pumpWidget(const NotesApp());
 
-    expect(find.text('notes_frontend'), findsOneWidget);
+    expect(find.byType(TextField), findsOneWidget);
+    expect(find.byIcon(Icons.search), findsOneWidget);
   });
 }
